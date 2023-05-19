@@ -19,8 +19,10 @@ contract MoveSystem is System {
     bytes32 player = addressToEntityKey(address(_msgSender()));
 		// TODO: Check if player has already spawned
 
-		// TOOD: make sure position isn't occupied
-
 		// TODO: set components for our player
+		// Player.set(player, true);
+    // Position.set(player, x, y);
+    // Health.set(player, 100);
+    // Damage.set(player, 10);
   }
 }
