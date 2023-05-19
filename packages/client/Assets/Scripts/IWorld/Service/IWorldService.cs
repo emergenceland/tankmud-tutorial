@@ -367,26 +367,6 @@ namespace IWorld.Service
              return ContractHandler.SendRequestAndWaitForReceiptAsync(grantAccessFunction, cancellationToken);
         }
 
-        public Task<string> IncrementRequestAsync(IncrementFunction incrementFunction)
-        {
-             return ContractHandler.SendRequestAsync(incrementFunction);
-        }
-
-        public Task<string> IncrementRequestAsync()
-        {
-             return ContractHandler.SendRequestAsync<IncrementFunction>();
-        }
-
-        public Task<TransactionReceipt> IncrementRequestAndWaitForReceiptAsync(IncrementFunction incrementFunction, CancellationTokenSource cancellationToken = null)
-        {
-             return ContractHandler.SendRequestAndWaitForReceiptAsync(incrementFunction, cancellationToken);
-        }
-
-        public Task<TransactionReceipt> IncrementRequestAndWaitForReceiptAsync(CancellationTokenSource cancellationToken = null)
-        {
-             return ContractHandler.SendRequestAndWaitForReceiptAsync<IncrementFunction>(null, cancellationToken);
-        }
-
         public Task<string> InstallModuleRequestAsync(InstallModuleFunction installModuleFunction)
         {
              return ContractHandler.SendRequestAsync(installModuleFunction);

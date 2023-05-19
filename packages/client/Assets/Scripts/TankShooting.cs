@@ -26,7 +26,7 @@ public class TankShooting : MonoBehaviour
 	{
 		try
 		{
-			// TODO: Send tx from NetworkManager	
+			await NetworkManager.Instance.worldSend.TxExecute<AttackFunction>(x, y);
 		}
 		catch (Exception ex)
 		{
@@ -57,7 +57,7 @@ public class TankShooting : MonoBehaviour
 			if (Input.GetMouseButtonDown(0) && !_fired)
 			{
 				_fired = true;
-				// TODO: Send Tx
+				SendFireTxAsync(Convert.ToInt32(dest.x), Convert.ToInt32(dest.z)).Forget();
 				_fired = false;
 			}
 		}

@@ -205,14 +205,6 @@ namespace IWorld.ContractDefinition
         public virtual string Grantee { get; set; }
     }
 
-    public partial class IncrementFunction : IncrementFunctionBase { }
-
-    [Function("increment", "uint32")]
-    public class IncrementFunctionBase : FunctionMessage
-    {
-
-    }
-
     public partial class InstallModuleFunction : InstallModuleFunctionBase { }
 
     [Function("installModule")]
@@ -867,8 +859,6 @@ namespace IWorld.ContractDefinition
         [Parameter("bytes32", "schema", 1)]
         public virtual byte[] Schema { get; set; }
     }
-
-
 
 
 
