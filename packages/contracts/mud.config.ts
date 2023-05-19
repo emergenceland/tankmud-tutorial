@@ -5,8 +5,8 @@ export default mudConfig({
     /*
      * TODO:
      * - Position: (x: int32, y: int32),
-     * - Player: bool,
      * - Health: uint32,
+     * - Player: bool,
      * - Damage: uint32
      */
   },

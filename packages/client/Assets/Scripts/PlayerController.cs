@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
 		var target = FindObjectOfType<TankShooting>();
 		if (target == null) return;
 		_target = target;
-		
+
 		// TODO: Get NetworkManager
 
 		// TODO: Get player sync
@@ -50,9 +50,9 @@ public class PlayerController : MonoBehaviour
 	// 	_destination = new Vector3(x, 0, y);
 	// }
 
-	
+
 	// TODO: Send tx
-	private async UniTaskVoid SendIncrementTxAsync()
+	private async UniTaskVoid SendMoveTxAsync(int x, int y)
 	{
 		try
 		{

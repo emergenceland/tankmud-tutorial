@@ -18,6 +18,7 @@ contract AttackSystem is System {
     //   bytes32[] memory atPosition = getKeysWithValue(PositionTableId, Position.encode(neighbor.x, neighbor.y));
     //   if (atPosition.length == 1) {
     //     attackTarget(player, atPosition);
+    //    }
     // }
   }
 

@@ -21,8 +21,8 @@ public class TankShooting : MonoBehaviour
 		_renderer = GetComponent<Renderer>();
 		_renderer.enabled = false;
 	}
-	
-	private async UniTaskVoid SendFireTxAsync()
+
+	private async UniTaskVoid SendFireTxAsync(int x, int y)
 	{
 		try
 		{
