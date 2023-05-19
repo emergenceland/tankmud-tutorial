@@ -10,8 +10,6 @@ contract MoveSystem is System {
 			 // Get player key
 	    bytes32 player = addressToEntityKey(address(_msgSender()));
 
-			// TODO: Get position for player
-
 	    // TODO: check if there is a player at the position
 
 			// TODO: Set position

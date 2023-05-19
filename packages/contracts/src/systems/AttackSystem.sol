@@ -8,23 +8,37 @@ import { addressToEntityKey } from "../addressToEntityKey.sol";
 contract AttackSystem is System {
   function attack(int32 x, int32 y) public {
     bytes32 player = addressToEntityKey(address(_msgSender()));
-		// TODO: Get the player at position x, y
 
     // TODO: get all coords surrounding the target (including the target)
+    // PositionData[] memory neighbors = mooreNeighborhood(PositionData(x, y)); 
 
     // TODO: iterate over all coords surrounding the target
+    // for (uint i = 0; i < neighbors.length; i++) {
+    //   PositionData memory neighbor = neighbors[i];
+    //   bytes32[] memory atPosition = getKeysWithValue(PositionTableId, Position.encode(neighbor.x, neighbor.y));
+    //   if (atPosition.length == 1) {
+    //     attackTarget(player, atPosition);
+    // }
   }
 
-  function attackTarget(bytes32 player, bytes32[] memory atPosition) internal {
-    bytes32 defender = atPosition[0];
+	// TODO
+  // function attackTarget(bytes32 player, bytes32[] memory atPosition) internal {
+  //   bytes32 defender = atPosition[0];
 
-		// TODO: Make sure target isn't dead and is a player
+  //   require(Player.get(defender), "target is not a player");
+  //   require(Health.get(defender) > 0, "target is dead");
 
-		// TODO: Get player damage and defender health
-		// TODO: Check if defender is dead
-		// TODO: Update health
-    
-  }
+  //   uint32 playerDamage = Damage.get(player);
+  //   uint32 defenderHealth = Health.get(defender);
+  //   uint32 newHealth = defenderHealth - playerDamage;
+  //   if (newHealth <= 0) {
+  //     Health.deleteRecord(defender);
+  //     Position.deleteRecord(defender);
+  //     Player.deleteRecord(defender);
+  //   } else {
+  //     Health.set(defender, newHealth);
+  //   } 
+  // }
 
 // TODO: Uncomment once you have the Position Table set up
 // function mooreNeighborhood(PositionData memory center) internal pure returns (PositionData[] memory) {
