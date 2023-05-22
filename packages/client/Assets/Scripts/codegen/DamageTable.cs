@@ -10,21 +10,21 @@ using Property = System.Collections.Generic.Dictionary<string, object>;
 
 namespace DefaultNamespace
 {
-    public class CounterTableUpdate : TypedRecordUpdate<Tuple<CounterTable?, CounterTable?>> { }
+    public class DamageTableUpdate : TypedRecordUpdate<Tuple<DamageTable?, DamageTable?>> { }
 
-    public class CounterTable : IMudTable
+    public class DamageTable : IMudTable
     {
-        public static readonly TableId TableId = new("", "Counter");
+        public static readonly TableId TableId = new("", "Damage");
 
         public ulong? value;
 
-        public static CounterTable? GetTableValue(string key)
+        public static DamageTable? GetTableValue(string key)
         {
             var query = new Query()
                 .Find("?value", "?attribute")
                 .Where(TableId.ToString(), key, "?attribute", "?value");
             var result = NetworkManager.Instance.ds.Query(query);
-            var counterTable = new CounterTable();
+            var damageTable = new DamageTable();
             var hasValues = false;
 
             foreach (var record in result)
@@ -36,16 +36,16 @@ namespace DefaultNamespace
                 {
                     case "value":
                         var valueValue = (ulong)value;
-                        counterTable.value = valueValue;
+                        damageTable.value = valueValue;
                         hasValues = true;
                         break;
                 }
             }
 
-            return hasValues ? counterTable : null;
+            return hasValues ? damageTable : null;
         }
 
-        public static IObservable<CounterTableUpdate> OnRecordUpdate()
+        public static IObservable<DamageTableUpdate> OnRecordUpdate()
         {
             return NetworkManager.Instance.ds.OnDataStoreUpdate
                 .Where(
@@ -54,7 +54,7 @@ namespace DefaultNamespace
                 )
                 .Select(
                     update =>
-                        new CounterTableUpdate
+                        new DamageTableUpdate
                         {
                             TableId = update.TableId,
                             Key = update.Key,
@@ -64,7 +64,7 @@ namespace DefaultNamespace
                 );
         }
 
-        public static IObservable<CounterTableUpdate> OnRecordInsert()
+        public static IObservable<DamageTableUpdate> OnRecordInsert()
         {
             return NetworkManager.Instance.ds.OnDataStoreUpdate
                 .Where(
@@ -73,7 +73,7 @@ namespace DefaultNamespace
                 )
                 .Select(
                     update =>
-                        new CounterTableUpdate
+                        new DamageTableUpdate
                         {
                             TableId = update.TableId,
                             Key = update.Key,
@@ -83,7 +83,7 @@ namespace DefaultNamespace
                 );
         }
 
-        public static IObservable<CounterTableUpdate> OnRecordDelete()
+        public static IObservable<DamageTableUpdate> OnRecordDelete()
         {
             return NetworkManager.Instance.ds.OnDataStoreUpdate
                 .Where(
@@ -93,7 +93,7 @@ namespace DefaultNamespace
                 )
                 .Select(
                     update =>
-                        new CounterTableUpdate
+                        new DamageTableUpdate
                         {
                             TableId = update.TableId,
                             Key = update.Key,
@@ -103,18 +103,18 @@ namespace DefaultNamespace
                 );
         }
 
-        public static Tuple<CounterTable?, CounterTable?> MapUpdates(
+        public static Tuple<DamageTable?, DamageTable?> MapUpdates(
             Tuple<Property?, Property?> value
         )
         {
-            CounterTable? current = null;
-            CounterTable? previous = null;
+            DamageTable? current = null;
+            DamageTable? previous = null;
 
             if (value.Item1 != null)
             {
                 try
                 {
-                    current = new CounterTable
+                    current = new DamageTable
                     {
                         value = value.Item1.TryGetValue("value", out var valueVal)
                             ? (ulong)valueVal
@@ -123,7 +123,7 @@ namespace DefaultNamespace
                 }
                 catch (InvalidCastException)
                 {
-                    current = new CounterTable { value = null, };
+                    current = new DamageTable { value = null, };
                 }
             }
 
@@ -131,7 +131,7 @@ namespace DefaultNamespace
             {
                 try
                 {
-                    previous = new CounterTable
+                    previous = new DamageTable
                     {
                         value = value.Item2.TryGetValue("value", out var valueVal)
                             ? (ulong)valueVal
@@ -140,11 +140,11 @@ namespace DefaultNamespace
                 }
                 catch (InvalidCastException)
                 {
-                    previous = new CounterTable { value = null, };
+                    previous = new DamageTable { value = null, };
                 }
             }
 
-            return new Tuple<CounterTable?, CounterTable?>(current, previous);
+            return new Tuple<DamageTable?, DamageTable?>(current, previous);
         }
     }
 }

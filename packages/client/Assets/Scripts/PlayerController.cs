@@ -21,8 +21,7 @@ public class PlayerController : MonoBehaviour
 	private bool _hasDestination;
 	private IDisposable? _disposer;
 	private TankShooting _target;
-	// TODO: Get PlayerSync component
-	// TODO: Get NetworkManager 
+	private PlayerSync _player;
 
 	void Start()
 	{
@@ -31,24 +30,23 @@ public class PlayerController : MonoBehaviour
 		if (target == null) return;
 		_target = target;
 
-		// TODO: Get NetworkManager
+		_player = GetComponent<PlayerSync>();
 
-		// TODO: Get player sync
-
-		// TODO: Subscribe to Position table
+		var sub = PositionTable.OnRecordInsert().Merge(PositionTable.OnRecordUpdate());
+		_disposer = ObservableExtensions.Subscribe(sub.ObserveOnMainThread(), OnChainPositionUpdate);
 	}
 
 	// TODO: Callback for Position table update
-	// private void OnChainPositionUpdate(PositionTableUpdate update)
-	// {
-	// 	if (_player.key == null || update.Key != _player.key) return;
-	// 	if (_player.IsLocalPlayer()) return;
-	// 	var currentValue = update.TypedValue.Item1;
-	// 	if (currentValue == null) return;
-	// 	var x = Convert.ToSingle(currentValue.x);
-	// 	var y = Convert.ToSingle(currentValue.y);
-	// 	_destination = new Vector3(x, 0, y);
-	// }
+	private void OnChainPositionUpdate(PositionTableUpdate update)
+	{
+		if (_player.key == null || update.Key != _player.key) return;
+		if (_player.IsLocalPlayer()) return;
+		var currentValue = update.TypedValue.Item1;
+		if (currentValue == null) return;
+		var x = Convert.ToSingle(currentValue.x);
+		var y = Convert.ToSingle(currentValue.y);
+		_destination = new Vector3(x, 0, y);
+	}
 
 
 	// TODO: Send tx
@@ -56,7 +54,7 @@ public class PlayerController : MonoBehaviour
 	{
 		try
 		{
-			// TODO: Send tx from NetworkManager	
+			await NetworkManager.Instance.worldSend.TxExecute<MoveFunction>(x, y);
 		}
 		catch (Exception ex)
 		{
@@ -92,7 +90,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 		// TODO: Early return if not local player
-		if (_target.RangeVisible) return;
+		if (!_player.IsLocalPlayer() || _target.RangeVisible) return;
 		if (Input.GetMouseButtonDown(0))
 		{
 			var ray = _camera.ScreenPointToRay(Input.mousePosition);
@@ -111,7 +109,7 @@ public class PlayerController : MonoBehaviour
 			}
 
 			_destinationMarker = Instantiate(destinationMarker, dest, Quaternion.identity);
-			// TODO: Send Tx
+			SendMoveTxAsync(Convert.ToInt32(dest.x), Convert.ToInt32(dest.z)).Forget();
 		}
 	}
 

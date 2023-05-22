@@ -662,6 +662,7 @@ GameObject:
   - component: {fileID: 8494640119540737440}
   - component: {fileID: 436748528113392774}
   - component: {fileID: 4326114591028432108}
+  - component: {fileID: 7416213480386566023}
   m_Layer: 6
   m_Name: Tank
   m_TagString: Untagged
@@ -685,7 +686,7 @@ Transform:
   - {fileID: 2819717444226315097}
   - {fileID: 391825217966097094}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2428493033774599304
 Rigidbody:
@@ -767,6 +768,19 @@ MonoBehaviour:
   m_ZeroHealthColor: {r: 1, g: 0, b: 0, a: 1}
   m_ExplosionPrefab: {fileID: 151086, guid: edb45b5f1585b480cb512c431287720f, type: 3}
   shell: {fileID: 7329492745129491182, guid: 09273cb84b31b45ebab13ee0a7a982bc, type: 3}
+--- !u!114 &7416213480386566023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7715415014581269739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96d6b0080d20419ba009908f725934a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 
 --- !u!1 &8570941342493416859
 GameObject:
   m_ObjectHideFlags: 0
