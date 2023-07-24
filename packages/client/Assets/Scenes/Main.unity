@@ -1185,9 +1185,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonRpcUrl: http://localhost:8545
   wsRpcUrl: ws://localhost:8545
-  pk: 
   chainId: 31337
   contractAddress: 
+  pk: 
+  uniqueWallets: 0
   disableCache: 1
 --- !u!4 &1290505664
 Transform:

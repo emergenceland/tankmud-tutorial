@@ -18,33 +18,6 @@ namespace DefaultNamespace
 
         public ulong? value;
 
-        public static HealthTable? GetTableValue(string key)
-        {
-            var query = new Query()
-                .Find("?value", "?attribute")
-                .Where(TableId.ToString(), key, "?attribute", "?value");
-            var result = NetworkManager.Instance.ds.Query(query);
-            var healthTable = new HealthTable();
-            var hasValues = false;
-
-            foreach (var record in result)
-            {
-                var attribute = record["attribute"].ToString();
-                var value = record["value"];
-
-                switch (attribute)
-                {
-                    case "value":
-                        var valueValue = (ulong)value;
-                        healthTable.value = valueValue;
-                        hasValues = true;
-                        break;
-                }
-            }
-
-            return hasValues ? healthTable : null;
-        }
-
         public static IObservable<HealthTableUpdate> OnRecordUpdate()
         {
             return NetworkManager.Instance.ds.OnDataStoreUpdate

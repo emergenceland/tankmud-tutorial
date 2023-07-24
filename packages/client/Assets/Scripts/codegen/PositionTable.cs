@@ -19,38 +19,6 @@ namespace DefaultNamespace
         public long? x;
         public long? y;
 
-        public static PositionTable? GetTableValue(string key)
-        {
-            var query = new Query()
-                .Find("?value", "?attribute")
-                .Where(TableId.ToString(), key, "?attribute", "?value");
-            var result = NetworkManager.Instance.ds.Query(query);
-            var positionTable = new PositionTable();
-            var hasValues = false;
-
-            foreach (var record in result)
-            {
-                var attribute = record["attribute"].ToString();
-                var value = record["value"];
-
-                switch (attribute)
-                {
-                    case "x":
-                        var xValue = (long)value;
-                        positionTable.x = xValue;
-                        hasValues = true;
-                        break;
-                    case "y":
-                        var yValue = (long)value;
-                        positionTable.y = yValue;
-                        hasValues = true;
-                        break;
-                }
-            }
-
-            return hasValues ? positionTable : null;
-        }
-
         public static IObservable<PositionTableUpdate> OnRecordUpdate()
         {
             return NetworkManager.Instance.ds.OnDataStoreUpdate

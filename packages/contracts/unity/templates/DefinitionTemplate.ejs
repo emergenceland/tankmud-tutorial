@@ -20,38 +20,6 @@ namespace <%= namespace %>
 			public <%= field.type %>? <%= field.key %>;
 		<% } -%>
 
-		public static <%= tableClassName %>? GetTableValue(string key)
-		{
-			var query = new Query().Find("?value", "?attribute").Where(TableId.ToString(), key, "?attribute", "?value");
-            var result = NetworkManager.Instance.ds.Query(query);
-            var <%= tableClassName[0].toLowerCase() + tableClassName.substring(1) %> = new <%= tableClassName %>();
-            var hasValues = false;
-
-            foreach (var record in result)
-            {
-                var attribute = record["attribute"].ToString();
-                var value = record["value"];
-
-								switch (attribute)
-								{
-									<% for (const field of fields) { -%>
-									case "<%= field.key %>":
-											var <%= field.key %>Value = 
-											<% if (field.type == "System.Numerics.BigInteger") { -%>
-												new System.Numerics.BigInteger((int)value);
-												<% } else { -%>
-												(<%= field.type %>)value;
-												<% } -%>
-											<%= tableClassName[0].toLowerCase() + tableClassName.substring(1) %>.<%= field.key %> = <%= field.key %>Value;	
-											hasValues = true;
-										break;
-									<% } -%>
-								}
-            }
-
-            return hasValues ? <%= tableClassName[0].toLowerCase() + tableClassName.substring(1) %> : null; 
-		}
-
 		public static IObservable<<%= tableClassName%>Update> OnRecordUpdate()
 		{
 			return NetworkManager.Instance.ds.OnDataStoreUpdate.Where(update => update.TableId == TableId.ToString() && update.Type == UpdateType.SetField)

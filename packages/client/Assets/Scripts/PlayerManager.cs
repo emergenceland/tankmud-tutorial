@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
 using DefaultNamespace;
 using IWorld.ContractDefinition;
 using mud.Client;
+using mud.Network.schemas;
 using mud.Unity;
 using Newtonsoft.Json;
 using UniRx;
@@ -23,31 +26,37 @@ public class PlayerManager : MonoBehaviour
 	async void Spawn(NetworkManager nm)
 	{
 		var addressKey = net.addressKey;
-		var currentPlayer = PlayerTable.GetTableValue(addressKey);
+		var playerTable = new TableId("", "Player");
+		var currentPlayer = net.ds.GetValue(playerTable, addressKey);
 		if (currentPlayer == null)
 		{
 			await nm.worldSend.TxExecute<SpawnFunction>(0, 0);
 		}
 
-		var playerSub = PlayerTable.OnRecordInsert().ObserveOnMainThread().Subscribe(OnUpdatePlayers);
+		var playerQuery = new Query().In(playerTable);
+		var playerSub = ObservableExtensions.Subscribe(net.ds.RxQuery(playerQuery).ObserveOnMainThread(), OnUpdatePlayers);
 		_disposers.Add(playerSub);
 	}
 
 	// TODO: Callback for PlayerTable update
-	private void OnUpdatePlayers(PlayerTableUpdate update)
+	private void OnUpdatePlayers((List<Record> SetRecords, List<Record> RemovedRecords) update)
 	{
-		var currentValue = update.TypedValue.Item1;
-		if (currentValue == null) return;
-		var playerPosition = PositionTable.GetTableValue(update.Key);
-		if (playerPosition == null) return;
-		var playerSpawnPoint = new Vector3((float)playerPosition.x, 0, (float)playerPosition.y);
-		var player = Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity);
-		// add to CameraControl's Targets array
-		var cameraControl = GameObject.Find("CameraRig").GetComponent<CameraControl>();
-		cameraControl.m_Targets.Add(player.transform);
-		player.GetComponent<PlayerSync>().key = update.Key;
-		if (update.Key != net.addressKey) return;
-		PlayerSync.localPlayerKey = update.Key;
+		foreach (var setRecord in update.SetRecords)
+		{
+			var currentValue = setRecord.value;
+			if (currentValue == null) continue;
+			var positionTable = new TableId("", "Position");
+			var playerPosition = net.ds.GetValue(positionTable, setRecord.key); 
+			if (playerPosition == null) continue; 
+			var playerSpawnPoint = new Vector3(Convert.ToSingle(playerPosition.value["x"]), 0, Convert.ToSingle(playerPosition.value["y"]));
+			var player = Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity);
+			// add to CameraControl's Targets array
+			var cameraControl = GameObject.Find("CameraRig").GetComponent<CameraControl>();
+			cameraControl.m_Targets.Add(player.transform);
+			player.GetComponent<PlayerSync>().key = setRecord.key;
+			if (setRecord.key != net.addressKey) continue;
+			PlayerSync.localPlayerKey = setRecord.key;
+		}
 	}
 
 	private void OnDestroy()
