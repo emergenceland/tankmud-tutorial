@@ -8,10 +8,11 @@
       "hash": "f2773f585e762480c835ac718b82b87cb111e500"
     },
     "com.emergenceland.unimud": {
-      "version": "file:/Users/lil/dev/UniMUD-dev/Packages/UniMUD",
+      "version": "https://github.com/emergenceland/unimud.git?path=Packages/UniMUD",
       "depth": 0,
-      "source": "local",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "e5bc8bf178b1f1b294b5e06ee7a873c8c6fe2b37"
     },
     "com.unity.ai.navigation": {
       "version": "1.1.3",

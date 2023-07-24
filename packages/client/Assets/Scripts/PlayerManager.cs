@@ -5,7 +5,6 @@ using IWorld.ContractDefinition;
 using mud.Client;
 using mud.Network.schemas;
 using mud.Unity;
-using Newtonsoft.Json;
 using UniRx;
 using UnityEngine;
 using ObservableExtensions = UniRx.ObservableExtensions;
